@@ -37,10 +37,10 @@ function GET_INVENTORY_LIST()
 
     for i = 1 , #SLOTSET_NAMELIST do
         inventoryItems[i] = {}
-        local slotSet = GET_CHILD(tree,SLOTSET_NAMELIST[i],'ui::CSlotSet')  
+        local slotSet = GET_CHILD(tree,SLOTSET_NAMELIST[i],'ui::CSlotSet')
         for j = 0 , slotSet:GetChildCount() - 1 do
             local slot = slotSet:GetChildByIndex(j);
-            local invItem = GET_SLOT_ITEM(slot); 
+            local invItem = GET_SLOT_ITEM(slot);
             if invItem ~= nil then
                 local invIndex = invItem.invIndex
                 local itemCls = GetIES(invItem:GetObject());
@@ -63,7 +63,7 @@ function GET_INVENTORY_LIST()
                     end
                     inventoryItems[i][invIndex].icon = itemCls.Icon..dictionary.ReplaceDicIDInCompStr(itemCls.Name)
 
-                    inventoryItems[i][invIndex].lock = invItem.isLockState 
+                    inventoryItems[i][invIndex].lock = invItem.isLockState
                 end
             end
         end
@@ -118,7 +118,7 @@ function ASSORTMENT_SORT(invItemSort,currentIndex,highestIndex,sortType,order)
     if not settings.sortLocked and invItemSort[currentIndex].lock then
         return;
     end
-    if sortType == 'name' then 
+    if sortType == 'name' then
         local firstItem = {'~',0}
         if order ~= 'ascending' then
             firstItem[1] = '!'
@@ -141,9 +141,9 @@ function ASSORTMENT_SORT(invItemSort,currentIndex,highestIndex,sortType,order)
             end
         end
         return firstItem[2]
-        
+
     end
-    if sortType == 'stacksize' then 
+    if sortType == 'stacksize' then
         local firstItem = {'~',0}
             if order ~= 'ascending' then
                 firstItem[1] = '!'
@@ -169,7 +169,7 @@ function ASSORTMENT_SORT(invItemSort,currentIndex,highestIndex,sortType,order)
     end
 
 
-    if sortType == 'weight' then 
+    if sortType == 'weight' then
         local firstItem = {'~',0}
             if order ~= 'ascending' then
                 firstItem[1] = '!'
@@ -194,7 +194,7 @@ function ASSORTMENT_SORT(invItemSort,currentIndex,highestIndex,sortType,order)
         return firstItem[2]
     end
 
-    if sortType == 'itemweight' then 
+    if sortType == 'itemweight' then
         local firstItem = {'~',0}
             if order ~= 'ascending' then
                 firstItem[1] = '!'
@@ -218,14 +218,14 @@ function ASSORTMENT_SORT(invItemSort,currentIndex,highestIndex,sortType,order)
         end
         return firstItem[2]
     end
-    if sortType == 'type' then 
+    if sortType == 'type' then
         local firstItem = {'~',0}
         if order ~= 'ascending' then
             firstItem[1] = '!'
         end
         for i = currentIndex,highestIndex do
             if invItemSort[i] == nil then
-            else                
+            else
                 if order == 'ascending' then
                     if firstItem[1] > invItemSort[i].type then
                         firstItem[1] = invItemSort[i].type
@@ -243,7 +243,7 @@ function ASSORTMENT_SORT(invItemSort,currentIndex,highestIndex,sortType,order)
         return firstItem[2]
     end
 
-    if sortType == 'grade' then 
+    if sortType == 'grade' then
 
         local firstItem = {'~',0}
             if order ~= 'ascending' then
@@ -267,7 +267,7 @@ function ASSORTMENT_SORT(invItemSort,currentIndex,highestIndex,sortType,order)
         end
         return firstItem[2]
     end
-    if sortType == 'icon' then 
+    if sortType == 'icon' then
 
         local firstItem = {'~',0}
             if order ~= 'ascending' then
@@ -317,52 +317,52 @@ GET_INVENTORY_LIST()
 function SORT_ITEM_INVENTORY_HOOKED()
     local context = ui.CreateContextMenu("CONTEXT_INV_SORT", "", 0, 0, 170, 100);
     local scpScp = string.format("REQ_INV_SORT(%d, %d)",IT_INVENTORY, BY_PRICE);
-    ui.AddContextMenuItem(context, ScpArgMsg("SortByPrice"), scpScp);   
+    ui.AddContextMenuItem(context, ScpArgMsg("SortByPrice"), scpScp);
     -- scpScp = string.format("REQ_INV_SORT(%d, %d)",IT_INVENTORY, BY_WEIGHT);
-    -- ui.AddContextMenuItem(context, ScpArgMsg("SortByWeight"), scpScp);  
+    -- ui.AddContextMenuItem(context, ScpArgMsg("SortByWeight"), scpScp);
     -- scpScp = string.format("REQ_INV_SORT(%d, %d)",IT_INVENTORY, BY_NAME);
-    -- ui.AddContextMenuItem(context, ScpArgMsg("SortByName"), scpScp);    
+    -- ui.AddContextMenuItem(context, ScpArgMsg("SortByName"), scpScp);
     scpScp = string.format("SORT_INVENTORY_BY('%s','%s')","name","ascending");
-    ui.AddContextMenuItem(context, 'By Name (Ascending)', scpScp);   
+    ui.AddContextMenuItem(context, '名前 (昇順)', scpScp);
     scpScp = string.format("SORT_INVENTORY_BY('%s','%s')","name","descending");
-    ui.AddContextMenuItem(context, 'By Name (Descending)', scpScp);   
+    ui.AddContextMenuItem(context, '名前 (降順)', scpScp);
 
     scpScp = string.format("SORT_INVENTORY_BY('%s','%s')","stacksize","ascending");
-    ui.AddContextMenuItem(context, 'By Stack Size (Ascending)', scpScp); 
+    ui.AddContextMenuItem(context, 'スタックサイズ (昇順)', scpScp);
     scpScp = string.format("SORT_INVENTORY_BY('%s','%s')","stacksize","descending");
-    ui.AddContextMenuItem(context, 'By Stack Size (Descending)', scpScp);
+    ui.AddContextMenuItem(context, 'スタックサイズ (降順)', scpScp);
 
     scpScp = string.format("SORT_INVENTORY_BY('%s','%s')","weight","ascending");
-    ui.AddContextMenuItem(context, 'By Stack Weight (Ascending)', scpScp); 
+    ui.AddContextMenuItem(context, 'スタック重量 (昇順)', scpScp);
     scpScp = string.format("SORT_INVENTORY_BY('%s','%s')","weight","descending");
-    ui.AddContextMenuItem(context, 'By Stack Weight (Descending)', scpScp); 
+    ui.AddContextMenuItem(context, 'スタック重量 (降順)', scpScp);
 
     scpScp = string.format("SORT_INVENTORY_BY('%s','%s')","itemweight","ascending");
-    ui.AddContextMenuItem(context, 'By Item Weight (Ascending)', scpScp); 
+    ui.AddContextMenuItem(context, 'アイテム重量 (昇順)', scpScp);
     scpScp = string.format("SORT_INVENTORY_BY('%s','%s')","itemweight","descending");
-    ui.AddContextMenuItem(context, 'By Item Weight (Descending)', scpScp); 
+    ui.AddContextMenuItem(context, 'アイテム重量 (降順)', scpScp);
 
     scpScp = string.format("SORT_INVENTORY_BY('%s','%s')","type","ascending");
-    ui.AddContextMenuItem(context, 'By Type (Ascending)', scpScp); 
+    ui.AddContextMenuItem(context, 'タイプ (昇順)', scpScp);
     scpScp = string.format("SORT_INVENTORY_BY('%s','%s')","type","descending");
-    ui.AddContextMenuItem(context, 'By Type (Descending)', scpScp); 
+    ui.AddContextMenuItem(context, 'タイプ (降順)', scpScp);
 
     scpScp = string.format("SORT_INVENTORY_BY('%s','%s')","grade","ascending");
-    ui.AddContextMenuItem(context, 'By Grade (Ascending)', scpScp); 
+    ui.AddContextMenuItem(context, 'グレード (昇順)', scpScp);
     scpScp = string.format("SORT_INVENTORY_BY('%s','%s')","grade","descending");
-    ui.AddContextMenuItem(context, 'By Grade (Descending)', scpScp); 
+    ui.AddContextMenuItem(context, 'グレード (降順)', scpScp);
 
     scpScp = string.format("SORT_INVENTORY_BY('%s','%s')","icon","ascending");
-    ui.AddContextMenuItem(context, 'By Icon (Ascending)', scpScp); 
+    ui.AddContextMenuItem(context, 'アイコン (昇順)', scpScp);
     scpScp = string.format("SORT_INVENTORY_BY('%s','%s')","icon","descending");
-    ui.AddContextMenuItem(context, 'By Icon (Descending)', scpScp); 
+    ui.AddContextMenuItem(context, 'アイコン (降順)', scpScp);
 
 
     scpScp = "SORT_LOCKED_TOGGLE()";
     if settings.sortLocked then
-        ui.AddContextMenuItem(context, 'Sort locked items: on', scpScp); 
+        ui.AddContextMenuItem(context, 'ロックされたアイテムをソート: on', scpScp); 
     else
-        ui.AddContextMenuItem(context, 'Sort locked items: off', scpScp); 
+        ui.AddContextMenuItem(context, 'ロックされたアイテムをソート: off', scpScp); 
     end
     ui.OpenContextMenu(context);
 end
@@ -373,4 +373,3 @@ settings.sortLocked = not settings.sortLocked
 ASSORTMENT_SAVESETTINGS()
 
 end
-
